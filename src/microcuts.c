@@ -206,7 +206,35 @@ void mc_assert_str_eq(const char* expr_str_a, const char* expr_str_b,
     }
     printf("%s", KYEL);
     printf("\nAssert %d failed on section '%s':\n", assert_no, section_name);
-    printf("Expected:\t%s == %s\n", a, b);
+    printf("Expected:\t\"%s\" == \"%s\"\n", a, b);
+    printf("Source code:\t%s === %s\n", expr_str_a, expr_str_b);
+    printf("Source:\t\t%s, line %d\n",file, line);
+    printf("%s", KNRM);
+    failed++;
+  } else {
+#ifndef BENCHMARK
+    printf(".");
+#endif
+  }
+  assert_no++;
+  section_asserts++;
+  if (cleanup_func) operations += cleanup_func();
+}
+
+void mc_assert_escstr_eq(const char* expr_str_a, const char* expr_str_b,
+                     const char* a, const char* b, char* (*esc)(char*), const char* file, int line){
+  static char a_buf[1024];
+  static char b_buf[1024];
+  if (strcmp(a, b)){
+    if (assert_no < 0){
+      printf("%s", KRED);
+      printf("\n\nWARNING!! assert() called before begin_section()!!\n");
+    }
+    printf("%s", KYEL);
+    printf("\nAssert %d failed on section '%s':\n", assert_no, section_name);
+    strcpy(a_buf, a);
+    strcpy(b_buf, b);
+    printf("Expected:\t\"%s\" == \"%s\"\n", esc(a_buf), esc(b_buf));
     printf("Source code:\t%s === %s\n", expr_str_a, expr_str_b);
     printf("Source:\t\t%s, line %d\n",file, line);
     printf("%s", KNRM);

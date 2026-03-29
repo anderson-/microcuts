@@ -9,11 +9,13 @@ extern "C" {
 #   define assert(A) mc_assert(#A, A, __FILE__, __LINE__)
 #   define assert_eq(A, B) mc_assert_eq(#A, #B, A, B, __FILE__, __LINE__)
 #   define assert_str_eq(A, B) mc_assert_str_eq(#A, #B, A, B, __FILE__, __LINE__)
+#   define assert_escstr_eq(A, B, e) mc_assert_escstr_eq(#A, #B, A, B, e, __FILE__, __LINE__)
 #   define assert_float_eq(A, B) mc_assert_float_eq(#A, #B, A, B, __FILE__, __LINE__)
 #else
 #   define assert(A) ;
 #   define assert_eq(A, B) ;
 #   define assert_str_eq(A, B) ;
+#   define assert_escstr_eq(A, B, e) ;
 #   define assert_float_eq(A, B) ;
 #endif
 
@@ -33,6 +35,8 @@ void mc_assert_eq(const char* expr_str_a, const char* expr_str_b, int a, int b,
                  const char* file, int line);
 void mc_assert_str_eq(const char* expr_str_a, const char* expr_str_b,
                      const char* a, const char* b, const char* file, int line);
+void mc_assert_escstr_eq(const char* expr_str_a, const char* expr_str_b,
+                        const char* a, const char* b, char* (*esc)(char*), const char* file, int line);
 void mc_assert_float_eq(const char* expr_str_a, const char* expr_str_b,
                        float a, float b, const char* file, int line);
 
